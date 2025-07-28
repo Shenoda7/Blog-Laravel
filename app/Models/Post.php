@@ -2,54 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\File;
-use Spatie\YamlFrontMatter\YamlFrontMatter;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Post
+class Post extends Model
 {
-    public $title;
-    public $excerpt;
+    /** @use HasFactory<\Database\Factories\PostFactory> */
 
-    public $body;
-    public $date;
-    public $slug;
+    use HasFactory;
+    protected $fillable = [
+        'title',
+        'slug',
+        'excerpt',
+        'body',
+        'category_id',
+        'published_at',
+    ];
 
-    /**
-     * @param $title
-     * @param $excerpt
-     * @param $body
-     * @param $date
-     */
-    public function __construct($title, $excerpt, $body, $date, $slug)
+    public function category(): BelongsTo
     {
-        $this->title = $title;
-        $this->excerpt = $excerpt;
-        $this->body = $body;
-        $this->date = $date;
-        $this->slug = $slug;
+        return $this->belongsTo(Category::class);
     }
 
-    public static function all()
+    public function user(): BelongsTo
     {
-        return collect(File::files(resource_path("posts/")))
-            ->map(fn($file) => YamlFrontMatter::parseFile($file))
-            ->map(fn($document) => new Post(
-                $document->matter('title'),
-                $document->matter('excerpt'),
-                $document->body(),
-                $document->matter('date'),
-                $document->matter('slug')
-            ));
+        return $this->belongsTo(User::class);
     }
-
-    public static function find($slug)
-    {
-        // of all the blog posts, find the one with a slug that matches the one that was requested.
-
-        return static::all()->firstWhere('slug', $slug);
-
-    }
-
 }

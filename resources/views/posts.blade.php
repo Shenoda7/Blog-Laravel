@@ -1,19 +1,17 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="/app.css">
-    <title>Blog</title>
-</head>
-<body>
-<?php foreach ($posts as $post) : ?>
-<article>
-    <h1>
-        <a href="/posts/<?= $post->slug ?>">
-            <?= $post->title ?>
-        </a>
-    </h1>
-    <div><?= $post->excerpt ?></div>
-</article>
-<?php endforeach; ?>
-</body>
-</html>
+<x-layout>
+    @foreach ($posts as $post)
+        <article>
+            <h1>
+                <a href="/posts/{{ $post->slug }}">
+                    {{ $post->title }}
+                </a>
+            </h1>
+                <?php start_measure("Load Queries"); ?>
+            <p>
+               By <a href="">{{ $post->user->name }}</a> <a href="/categories/{{ $post->category->slug }}">{{ $post->category->name }}</a>
+            </p>
+                <?php stop_measure("Load Queries"); ?>
+            <div>{{ $post->excerpt }}</div>
+        </article>
+    @endforeach
+</x-layout>
