@@ -2,10 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Category;
 use App\Models\Post;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class HomePageTest extends TestCase
@@ -15,7 +12,7 @@ class HomePageTest extends TestCase
         $post = Post::first();
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertViewHas('posts', function($posts) use ($post) {
+        $response->assertViewHas('posts', function ($posts) use ($post) {
             return $posts->contains($post);
         });
     }
@@ -38,7 +35,7 @@ class HomePageTest extends TestCase
     {
         $post = Post::first();
         $category_name = $post->category->name;
-        $response = $this->get('/posts/' . $post->slug);
+        $response = $this->get('/posts/'.$post->slug);
         $response->assertSee($category_name);
     }
 
@@ -48,5 +45,4 @@ class HomePageTest extends TestCase
             'title' => 'My Family Post',
         ]);
     }
-
 }
