@@ -2,14 +2,19 @@
 
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Models\Category;
 use App\Models\User;
+use App\Services\MailchimpNewsletter;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', [PostController::class, 'index'])->name('home');
+
+Route::post('newsletter', NewsletterController::class);
 
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('post.show');
 

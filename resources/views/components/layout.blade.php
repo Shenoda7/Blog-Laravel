@@ -11,6 +11,11 @@
     <title>Blog</title>
 </head>
 <body>
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 <header class="header">
     @if (session('success'))
         <div class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
@@ -44,6 +49,9 @@
 
             <nav>
                 <ul class="nav">
+                    <li><a href="#newsletter"
+                           class="bg-blue-600 !text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors text-sm">Subscribe</a>
+                    </li>
                     @auth
                         <li>Welcome, {{ auth()->user()?->username }}</li>
 
@@ -67,6 +75,40 @@
         {{ $slot }}
     </div>
 </main>
+
+<!-- Newsletter Subscription -->
+<section id="newsletter" class="bg-gray-50 py-12">
+    <div class="container">
+        <div class="text-center">
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Stay Updated</h3>
+            <p class="text-gray-600 mb-6">Get the latest posts delivered to your inbox.</p>
+
+            <form action="/newsletter" method="POST" class="max-w-md mx-auto">
+                @csrf
+                <div class="flex gap-3">
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                        class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                    <button
+                        type="submit"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                    >
+                        Subscribe
+                    </button>
+
+
+                </div>
+                @error('email')
+                <p class="mt-2 !ml-[-100px] text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </form>
+        </div>
+    </div>
+</section>
 
 <footer class="footer">
     <div class="container">
