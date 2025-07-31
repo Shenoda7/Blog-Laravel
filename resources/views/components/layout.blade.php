@@ -12,6 +12,12 @@
 </head>
 <body>
 <header class="header">
+    @if (session('success'))
+        <div class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="container">
         <div class="header-content">
             <a href="/" class="logo">Blog</a>
@@ -38,7 +44,19 @@
 
             <nav>
                 <ul class="nav">
-                    <li><a href="/">Home</a></li>
+                    @auth
+                        <li>Welcome, {{ auth()->user()?->username }}</li>
+
+                        <form method="POST" action="/logout">
+                            @csrf
+
+                            <button type="submit">Logout</button>
+                        </form>
+                    @else
+                        <li><a href="/register">Register</a></li>
+                        <li><a href="/login">Log In</a></li>
+                    @endauth
+
                 </ul>
             </nav>
         </div>

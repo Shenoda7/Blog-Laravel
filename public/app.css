@@ -61,7 +61,19 @@ body {
     transition: color 0.2s ease;
 }
 
+.nav button {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+
 .nav a:hover {
+    color: #3b82f6;
+}
+
+.nav button:hover {
     color: #3b82f6;
 }
 
